@@ -79,9 +79,14 @@ app.use((req, res, next) => {
 });
 
 // MongoDB connection
-mongoose.connect(dbUrl)
+mongoose.connect(process.env.ATLASDB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000
+})
 .then(() => console.log('Connected to MongoDB!'))
 .catch(err => console.error(`Error connecting to MongoDB: ${err}`));
+
 
 // Routes for listings
 app.use('/listings', listingsRoutes);
@@ -100,7 +105,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const port = process.env.PORT || 10000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// In app.js, find the app.listen(...) block
+const PORT = process.env.PORT || 10000; // Use Render's PORT, or default to 10000 locally
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
