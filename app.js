@@ -101,6 +101,12 @@ app.use('/listings', reviewRoutes => {
 
 app.use('/', userRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err);
+  // ... what is the rest of this code block?
+});
+
 // NEW CHANGE: Add this route to handle the root URL
 app.get('/', (req, res) => {
     res.redirect('/listings'); // Redirects the root URL to your listings page
