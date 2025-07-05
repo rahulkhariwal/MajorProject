@@ -3,9 +3,7 @@ const data = require('./data.js');
 const Listing = require('../models/listing.js');
 
 // Load environment variables in development
-if(process.env.NODE_ENV !== "production") {
-  require('dotenv').config();
-}
+require('dotenv').config(); // Temporarily force dotenv to always load
 
 // Use a fallback URL if ATLASDB_URL is not set
 const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
