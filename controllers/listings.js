@@ -11,7 +11,7 @@ module.exports.showallListings = async (req, res) => {
     } catch (error) {
         console.error('Error fetching listings:', error);
         req.flash('error', 'Failed to fetch listings');
-        res.redirect('/listings');
+        return res.redirect('/listings'); // ADD 'return' HERE
     }
 }
 
