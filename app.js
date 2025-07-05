@@ -89,20 +89,30 @@ mongoose.connect(process.env.ATLASDB_URL, {
 
 
 // Routes for listings
+// ... (your existing app.js code) ...
+
+// Routes for listings
 app.use('/listings', listingsRoutes);
 
 // Routes for reviews
-app.use('/listings', reviewRoutes =>{
+app.use('/listings', reviewRoutes => {
   console.log()
 });
 
 app.use('/', userRoutes);
 
-// Error handling middleware
+// NEW CHANGE: Add this route to handle the root URL
+app.get('/', (req, res) => {
+    res.redirect('/listings'); // Redirects the root URL to your listings page
+});
+
+// Error handling middleware (this should always be last)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).render('listings/error', { status: 500, message: 'Internal Server Error' });
 });
+
+// ... (your existing app.listen(...) block) ...
 
 // Start the server
 // In app.js, find the app.listen(...) block
