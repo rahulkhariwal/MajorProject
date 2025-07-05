@@ -14,7 +14,7 @@ console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log("dbUrl being used:", dbUrl);
 // -----------------------------
 
-const main = async () => {
+const main = async () => { 
     try {
         await mongoose.connect(dbUrl, {
             useNewUrlParser: true,
