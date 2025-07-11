@@ -95,9 +95,9 @@ mongoose.connect(process.env.ATLASDB_URL, {
 app.use('/listings', listingsRoutes);
 
 // Routes for reviews
-app.use('/listings', reviewRoutes => {
-  console.log()
-});
+app.use('/listings/:id/reviews', reviewRoutes); // Correct way to mount review routes
+
+
 
 app.use('/', userRoutes);
 

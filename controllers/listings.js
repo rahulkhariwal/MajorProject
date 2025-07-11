@@ -61,28 +61,27 @@ module.exports.createListing = async (req, res) => {
 }
 
 
+// In your listings.js or controllers/listings.js file
+
 module.exports.showspecificListing = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const listing = await Listing.findById(id).populate({
+    const { id } = req.params;
+    // Populate the 'owner' field to get the full user object
+    // Also populate 'reviews' and, for each review, populate its 'author'
+    const listing = await Listing.findById(id)
+        .populate('owner')
+        .populate({
             path: 'reviews',
             populate: {
-                path: 'author' // Assuming 'author' is the field that references the User model in your Review schema
+                path: 'author' // Populate the author field within each review
             }
-        }).populate('owner');
+        });
 
-        if (!listing) {
-            req.flash('error', 'Listing does not exist');
-            return res.redirect('/listings');
-        }
-
-        res.render('listings/show', { listing });
-    } catch (error) {
-        console.error('Error fetching listing:', error);
-        req.flash('error', 'Failed to fetch listing details');
-        res.redirect('/listings');
+    if (!listing) {
+        req.flash('error', 'Listing does not exist!');
+        return res.redirect('/listings');
     }
-}
+    res.render('listings/show', { listing });
+};
 
 
 module.exports.renderEditForm = async (req, res) => {
