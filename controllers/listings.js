@@ -12,7 +12,7 @@ module.exports.showallListings = async (req, res) => {
   } catch (error) {
     console.error("Error fetching listings:", error);
     req.flash("error", "Failed to fetch listings");
-    return res.redirect("/listings"); // <<< ADD 'return' HERE
+    return res.redirect("/listings"); // Correct: 'return' is here
   }
 };
 
@@ -52,11 +52,11 @@ module.exports.createListing = async (req, res) => {
 
     // In createListing function (example)
     req.flash("success", "New Listing Created!");
-    return res.redirect(`/listings/${newListing._id}`); // <<< ADD 'return' HERE
+    return res.redirect(`/listings/${newListing._id}`); // Correct: 'return' is here
   } catch (error) {
     console.error("Error creating listing:", error);
     req.flash("error", "Failed to create listing");
-    res.redirect("/listings");
+    return res.redirect("/listings"); // Correct: ADDED 'return' here
   }
 };
 
@@ -86,11 +86,16 @@ module.exports.renderEditForm = async (req, res) => {
   try {
     const { id } = req.params;
     const listing = await Listing.findById(id);
+    // Added check: If listing is not found, redirect and flash error
+    if (!listing) {
+        req.flash("error", "Listing not found to edit!");
+        return res.redirect("/listings");
+    }
     res.render("listings/edit", { listing });
   } catch (error) {
     console.error("Error rendering edit form:", error);
     req.flash("error", "Failed to render edit form");
-    res.redirect("/listings");
+    return res.redirect("/listings"); // Correct: ADDED 'return' here
   }
 };
 
@@ -125,11 +130,11 @@ module.exports.updateListing = async (req, res) => {
     });
 
     req.flash("success", "Listing Updated");
-    res.redirect("/listings");
+    return res.redirect(`/listings/${id}`); // Changed to redirect to the updated listing's show page
   } catch (error) {
     console.error("Error updating listing:", error);
     req.flash("error", "Failed to update listing");
-    res.redirect("/listings");
+    return res.redirect("/listings"); // Correct: ADDED 'return' here
   }
 };
 
@@ -144,10 +149,10 @@ module.exports.deleteListing = async (req, res) => {
     await Review.deleteMany({ _id: { $in: listing.reviews } });
     await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing deleted successfully");
-    res.redirect("/listings");
+    return res.redirect("/listings"); // Correct: 'return' is already here
   } catch (error) {
     console.error("Error deleting listing:", error);
     req.flash("error", "Failed to delete listing");
-    res.redirect("/listings");
+    return res.redirect("/listings"); // Correct: ADDED 'return' here
   }
 };
