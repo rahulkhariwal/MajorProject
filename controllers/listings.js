@@ -75,11 +75,13 @@ module.exports.showspecificListing = async (req, res) => {
       },
     });
 
-  if (!listing) {
-    req.flash("error", "Listing does not exist!");
-    return res.redirect("/listings");
-  }
-  res.render("listings/show", { listing });
+if (!listing) {
+  return res.status(404).send("Listing not found");
+}
+if (!listing.owner) {
+  listing.owner = { username: "Unknown" }; // Default value
+}
+res.render("listings/show", { listing });
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -155,4 +157,14 @@ module.exports.deleteListing = async (req, res) => {
     req.flash("error", "Failed to delete listing");
     return res.redirect("/listings"); // Correct: ADDED 'return' here
   }
+};
+
+module.exports.renderNewForm = (req, res) => {
+    try {
+        res.render("listings/new");
+    } catch (error) {
+        console.error("Error rendering new form:", error);
+        req.flash("error", "Failed to render new listing form");
+        res.redirect("/listings");
+    }
 };

@@ -11,7 +11,7 @@
                     <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %> Image"
                         style="height: 280px; object-fit: cover;">
                     <div class="card-body">
-                        <p class="card-text"><strong>Listed By:</strong> <%= listing.owner.username %></p>
+                        <p class="card-text"><strong>Listed By:</strong> <%= listing.owner?.username || "Unknown" %></p>
                         <p class="card-text"><strong>Description:</strong> <%= listing.description %></p>
                         <p class="card-text"><strong>Price:</strong> ₹ <%= listing.price.toLocaleString('en-IN') %></p>
                         <p class="card-text"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
