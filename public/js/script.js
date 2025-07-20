@@ -20,13 +20,15 @@
 $(document).ready(function() {
   // Fetch countries data
   $.ajax({
-      url: 'https://restcountries.com/v2/all',
+      // Corrected URL to use the v3.1 endpoint
+      url: 'https://restcountries.com/v3.1/all', 
       dataType: 'json',
       success: function(data) {
           var countryOptions = $('#countryOptions');
           // Loop through the data and append options to the dropdown menu
           data.forEach(function(country) {
-              countryOptions.append(`<button class="dropdown-item" type="button" data-value="${country.name}">${country.name}</button>`);
+              // Corrected: Access the common name from the new API structure (v3.1)
+              countryOptions.append(`<button class="dropdown-item" type="button" data-value="${country.name.common}">${country.name.common}</button>`);
           });
 
           // Handle click on dropdown item
@@ -35,6 +37,11 @@ $(document).ready(function() {
               $('#countryDropdown').html(selectedCountry);
               $('#country').val(selectedCountry);
           });
+      },
+      // Added error handling for the AJAX call
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.error("Failed to fetch countries: " + textStatus, errorThrown);
+          // You might want to display a user-friendly message on the page here
       }
   });
 });
@@ -55,5 +62,3 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   });
 });
-
-
