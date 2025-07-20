@@ -9,7 +9,7 @@ module.exports.verifyLogin = async (req, res) => {
     req.flash("success", 'Welcome to Wanderlust! You are logged in.');
     const redirectUrl = res.locals.redirectUrl || '/listings'; // Default to home page if redirectUrl is not set
     console.log(redirectUrl);
-    res.redirect(redirectUrl); // Use the correct redirectUrl
+    return res.redirect(redirectUrl); // <<< ADDED 'return' HERE
 }
 
 module.exports.renderSignupForm = (req, res) => {
